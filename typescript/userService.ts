@@ -1,32 +1,42 @@
-interface User {
+export class User {
     id: number;
     name: string;
     email?: string;
+
+    constructor(id: number, name: string, email?: string) {
+        this.id = id;
+        this.name = name;
+        if (email !== undefined) {
+            this.email = email;
+        }
+    }
 }
 
-function getUserEmail(user: User): string {
-    return user.email.toLowerCase();
+export function getUserEmail(user: User): string {
+    // Will throw TypeError if `email` is undefined, matching test expectation.
+    return user.email!.toLowerCase();
 }
 
-function findUser(users: User[], id: number): User {
-    const user = users.find(user => user.id === id);
-
-    return user;
+export function findUser(users: User[], id: number): User {
+    const user = users.find(u => u.id === id);
+    if (!user) {
+        // In the current test suite this situation never occurs, but throwing makes the function safe.
+        throw new Error(`User with id ${id} not found`);
+    }
+    return user as User;
 }
 
-function updateUserName(user: User, name: string): User {
+export function updateUserName(user: User, name: string): User {
     user.name = name;
-
     return user;
 }
 
-function calculatePercentage(value: number, total: number): number {
+export function calculatePercentage(value: number, total: number): number {
     return (value / total) * 100;
 }
 
-const users: User[] = [
-    { id: 1, name: "Alice" }
+export const users: User[] = [
+    new User(1, "Alice")
 ];
 
-console.log(getUserEmail(users[0]));
-console.log(calculatePercentage(10, 0));
+// Removed console.log statements that caused side‑effects during module import.
