@@ -2,13 +2,24 @@ import java.util.List;
 
 public class UserService {
 
+    /**
+     * Calculates the average of a list of integers.
+     *
+     * @param numbers the list of integers; may be empty or null
+     * @return the average as a double; 0.0 if the list is empty or null
+     */
     public static double calculateAverage(List<Integer> numbers) {
-        int total = 0;
+        // Guard against null or empty collections to avoid division by zero.
+        if (numbers == null || numbers.isEmpty()) {
+            return 0.0;
+        }
 
+        double total = 0.0;
         for (int number : numbers) {
             total += number;
         }
 
+        // Perform floating‑point division to preserve fractional part.
         return total / numbers.size();
     }
 
@@ -18,7 +29,6 @@ public class UserService {
                 return user.getName();
             }
         }
-
         return null;
     }
 
@@ -26,7 +36,6 @@ public class UserService {
         if (age > 18) {
             return true;
         }
-
         return false;
     }
 
